@@ -7,7 +7,7 @@ import (
 
 	"github.com/Eyevinn/mp4ff/mp4"
 
-	wvpb "github.com/gowidevine/widevinepb"
+	wvpb "github.com/orajowo/gowidevine/widevinepb"
 )
 
 // Adapted from https://github.com/Eyevinn/mp4ff/blob/v0.46.0/cmd/mp4ff-decrypt/main.go
