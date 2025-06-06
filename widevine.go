@@ -8,10 +8,10 @@ import (
 	"encoding/asn1"
 	"fmt"
 
-	"github.com/chmike/cmac-go"
+	"github.com/orajowo/cmac"
 	"google.golang.org/protobuf/proto"
 
-	wvpb "wvgo/gowidevine/widevinepb"
+	wvpb "github.com/orajowo/gowidevine/widevinepb"
 )
 
 func ptr[T any](v T) *T {
