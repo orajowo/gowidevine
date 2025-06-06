@@ -15,7 +15,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	wvpb "github.com/gowidevine/widevinepb"
+	wvpb "github.com/orajowo/gowidevine/widevinepb"
 )
 
 // ServiceCertificateRequest is the constant request for getting the service certificate from the Widevine license server.
