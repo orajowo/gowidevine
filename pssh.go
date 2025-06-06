@@ -9,7 +9,7 @@ import (
 	"github.com/Eyevinn/mp4ff/mp4"
 	"google.golang.org/protobuf/proto"
 
-	wvpb "wvgo/gowidevine/widevinepb"
+	wvpb "github.com/gowidevine/widevinepb"
 )
 
 // WidevineSystemID is the system ID of Widevine.
