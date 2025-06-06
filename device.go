@@ -11,7 +11,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	wvpb "github.com/gowidevine/widevinepb"
+	wvpb "github.com/orajowo/gowidevine/widevinepb"
 )
 
 // Device represents a Widevine device.
