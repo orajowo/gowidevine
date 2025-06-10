@@ -5,7 +5,7 @@ name: Deploy GoDoc to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - mmaster
 
 # Izin (Permissions): Memberikan izin kepada Action untuk menulis
 # ke branch 'gh-pages' untuk deployment.
