@@ -1,66 +1,59 @@
 name: Deploy GoDoc to GitHub Pages
 
-# Pemicu (Trigger): Action ini akan berjalan setiap kali ada push
-# ke branch 'main'. Ganti 'main' jika branch utama Anda adalah 'master'.
 on:
   push:
     branches:
-      - mmaster
+      - master # Or 'master'
 
-# Izin (Permissions): Memberikan izin kepada Action untuk menulis
-# ke branch 'gh-pages' untuk deployment.
+# Grant permissions for the action to write to the gh-pages branch
 permissions:
   contents: write
 
 jobs:
   deploy-godoc:
-    runs-on: ubuntu-latest # Menggunakan sistem operasi Ubuntu terbaru
+    runs-on: ubuntu-latest
     steps:
-      # Langkah 1: Mengunduh kode dari repositori Anda
+      # 1. Check out your repository's code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Langkah 2: Menyiapkan lingkungan Go
+      # 2. Set up the Go environment
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22' # Gunakan versi Go yang sesuai dengan proyek Anda
+          go-version: '1.23' # Use your project's Go version
 
-      # Langkah 3: Menginstall godoc
+      # 3. Install the godoc tool
       - name: Install godoc
         run: go install golang.org/x/tools/cmd/godoc@latest
 
-      # Langkah 4: Membuat direktori output untuk file HTML
+      # 4. Create the output directory for the HTML files
       - name: Create output directory
         run: mkdir -p godoc_html
 
-      # Langkah 5: Menjalankan godoc untuk menghasilkan HTML
-      # Perintah ini menjalankan server godoc di latar belakang,
-      # lalu menggunakan 'wget' untuk mengunduh versi statis dari dokumentasi.
-      # Ganti 'github.com/USERNAME/REPONAME' dengan path modul Go Anda.
+      # 5. Generate static HTML (Corrected Step)
       - name: Generate static HTML documentation
         run: |
-          # Dapatkan path modul dari file go.mod
+          # Automatically get the module path from the go.mod file
           MODULE_PATH=$(grep module go.mod | awk '{print $2}')
           echo "Module path is $MODULE_PATH"
           
-          # Jalankan server godoc
+          # Run the godoc server in the background
           godoc -http=:6060 &
           
-          # Beri waktu server untuk mulai
+          # Give the server a moment to start up
           sleep 5 
           
-          # Unduh situs secara rekursif ke direktori output
-          wget --recursive --no-host-directories --convert-links --page-requisites --directory-prefix=godoc_html/ http://localhost:6060/pkg/$MODULE_PATH/
+          # Use wget with --no-parent to prevent it from downloading the entire standard library
+          wget --recursive --no-parent --convert-links --page-requisites \
+               --no-host-directories --directory-prefix=godoc_html/ \
+               http://localhost:6060/pkg/$MODULE_PATH/
 
-      # Langkah 6: Menggunakan Action siap pakai untuk deploy ke GitHub Pages
-      # Action ini akan mengambil konten dari direktori 'godoc_html'
-      # dan mendorongnya ke branch 'gh-pages'.
+      # 6. Deploy the generated HTML to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./godoc_html/pkg # Sesuaikan dengan direktori output wget
-          # Opsi ini akan menghapus semua file lama di branch gh-pages
-          # sebelum menambahkan file baru.
+          # The publish directory is correct, as wget creates the /pkg/ structure
+          publish_dir: ./godoc_html/pkg
           keep_files: false
