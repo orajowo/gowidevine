@@ -15,7 +15,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.22' # Ganti dengan versi Go yang Anda gunakan
+          go-version: '1.23'
 
       - name: Install go-doc-static
         run: go install github.com/s-h-i-m-a/go-doc-static@latest
